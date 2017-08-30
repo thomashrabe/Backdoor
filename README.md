@@ -31,6 +31,16 @@ Each `procees` requires to specify:
 6. err : Same as `log`, but for `std::cerr`
 7. dependsOn : Any previous process ID. Pipeline executes this process if all processes in depends on finished successfully.
 
+The top level of `config.json` specifies the `config` object. This should contain general parameters such as user names, machine names or other parameters used in by scripts rather for one individually. `Backdoor` will replace any keys specified in `config` in every `process` command if specified there. I.e. with
+
+```
+config : {
+            "user" : "me"
+}
+```
+
+any occurence of `@user` in every process command would replaced.
+
 #### Run Backdoor
 
 Change into your Backdoor directory, specify processes in `config.json` and run `./pipeline`.
