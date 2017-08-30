@@ -23,15 +23,15 @@ Each `procees` requires to specify:
 }
 ```
 
-1. ID : Process id. It's best to use successive numbers 1,2,3...
-2. Name : A short description of the current process
+1. id : Process id. It's best to use successive numbers 1,2,3...
+2. name : A short description of the current process
 3. command : The command. Any entry marked with `@` such as `@file` will be replaced with the matching parameter in parameters. `@file` would be replaced with the `file` entry in `parameters`
 4. parameters : All parameters required for the command
 5. log : If set, will either replace any occurence of `>@log` with the value or will append `>step1.log` (the specified filename) to command
 6. err : Same as `log`, but for `std::cerr`
 7. dependsOn : Any previous process ID. Pipeline executes this process if all processes in depends on finished successfully.
 
-The top level of `config.json` specifies the `config` object. This should contain general parameters such as user names, machine names or other parameters used in by scripts rather for one individually. `Backdoor` will replace any keys specified in `config` in every `process` command if specified there. I.e. with
+The top level of `config.json` specifies the `config` object. This should contain common parameters such as user names, machine names or other parameters used by all scripts rather for one specific script. `Backdoor` will replace any keys from `config` in every `process` command if specified there. I.e. with
 
 ```
 config : {
