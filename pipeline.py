@@ -172,9 +172,10 @@ if __name__ == "__main__":
         print('')
         print('')
         print('')
-
-        print('FAILED PROCESSES')
-        for failed_id in pipeline.failed_processes:
-            print(pipeline.log[failed_id][0])
-            print(pipeline.log[failed_id][1])
+    
+        if(len(pipeline.failed_processes) > 0):
+            print('FAILED PROCESSES')
+            for failed_id in pipeline.failed_processes:
+                print(pipeline.log[failed_id][0])
+                print(pipeline.log[failed_id][1])
     
