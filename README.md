@@ -31,3 +31,7 @@ Each `procees` requires to specify:
 6. err : Same as `log`, but for `std::cerr`
 7. dependsOn : Any previous process ID. Pipeline executes this process if all processes in depends on finished successfully.
 
+#### Run Backdoor
+
+Change into your Backdoor directory, specify processes in `config.json` and run `./pipeline`.
+In order to check command prior to processing, run `./pipeline --dry`
