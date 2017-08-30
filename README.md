@@ -39,7 +39,7 @@ config : {
 }
 ```
 
-any occurence of `@user` in every process command would replaced.
+every occurence of `@user` in every process command would be replaced.
 
 #### Run Backdoor
 
