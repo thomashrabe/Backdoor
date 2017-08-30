@@ -123,7 +123,9 @@ class Pipeline(object):
             subprocess.check_output(process.command, shell=True)
             self._finishedProcesses.append(process.id)
             self._log[process.id] = [process.name,process.command]
-
+            
+            print('FINISHED %s ' % (process.name)) 
+            
         except subprocess.CalledProcessError as grepexc:
             self._failedProcesses.append(process.id)
             self._log[process.id] = [process.name,process.command,grepexc.returncode, grepexc.output]
