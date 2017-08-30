@@ -1,0 +1,36 @@
+{
+    "config" : {
+        "dir" : "./",
+        "rights" : "700"
+    },
+    "processes" : [
+        {
+            "id" : 1,
+            "name" : "Create test file",
+            "command" : "touch  @dir@file",
+            "parameters" : {"file":"backdoor.txt"},
+            "log" : "step1.log",
+            "err" : "step1.err",
+            "dependsOn" : []
+        },
+        {
+            "id" : 2,
+            "name" : "Change rights",
+            "command" : "chmod @rights @file",
+            "parameters" : {"file":"test.txt"},
+            "log" : "step2.log",
+            "err" : "step2.err",
+            "dependsOn" : [1]
+        },
+        {
+            "id" : 3,
+            "name" : "Remove logs",
+            "command" : "rm *log *err",
+            "parameters" : {},
+            "log" : null,
+            "err" : null,
+            "dependsOn" : [2]
+        }
+    ]
+}
+        
