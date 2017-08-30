@@ -130,6 +130,7 @@ class Pipeline(object):
             self._failedProcesses.append(process.id)
             self._log[process.id] = [process.name,process.command,grepexc.returncode, grepexc.output]
         except PipelineDependencyFailedException as pex:
+            print >> sys.stderr , 'Process ',process.id, ' not run because of dependency'
             self._failedProcesses.append(process.id)
             self._log[process.id] = [process.name,process.command]
         except PipelineDependencyNotFinishedException as pex:
