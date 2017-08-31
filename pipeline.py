@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-
 import json
 import subprocess
-import sys
+import sys,time
 
 class PipelineDependencyFailedException(Exception):
     pass
@@ -18,6 +17,7 @@ class PipelineProcess(object):
         self._command   = str(jsonParameters['command'])
         self._parameters= jsonParameters['parameters']
         self._depends_on= jsonParameters['dependsOn']
+
         if 'log' in jsonParameters:
             self._log    = jsonParameters['log']
         else:
@@ -29,6 +29,7 @@ class PipelineProcess(object):
             self._err = None
 
         self._config    = config
+        self._rawObject = jsonParameters
 
     @property
     def command(self):
@@ -72,6 +73,10 @@ class PipelineProcess(object):
     @property
     def name(self):
         return self._name
+
+    @property
+    def processJSON(self):
+        return self._rawObject
 
 class Pipeline(object):
     def __init__(self,configFile = './config.json'):
@@ -120,11 +125,17 @@ class Pipeline(object):
             print('STARTING %s ' % (process.name)) 
             print(process.command)
 
+            startTime = time.time()
+
             subprocess.check_output(process.command, shell=True)
             self._finishedProcesses.append(process.id)
             self._log[process.id] = [process.name,process.command]
             
+            endTime = time.time()
+            difference = endTime - startTime
             print('FINISHED %s ' % (process.name)) 
+            print('Processing took %i seconds') % (differnce)
+            print('')
             
         except subprocess.CalledProcessError as grepexc:
             self._failedProcesses.append(process.id)
@@ -141,17 +152,21 @@ class Pipeline(object):
         for process in self.processes():
             yield process.command
 
-
 if __name__ == "__main__":
 
     import argparse
 
     parser = argparse.ArgumentParser(prog='Backdoor')
     parser.add_argument('--conf', type=str)
+    parser.add_argument('--finished', type=str)
     parser.add_argument('--dry', action='store_true')
+    
     args = parser.parse_args()
-
-    pipeline = Pipeline()
+    
+    if args.conf:
+        pipeline = Pipeline(args.conf)
+    else:
+        pipeline = Pipeline()
 
     if args.dry:
         for command in pipeline.gatherCommands():
@@ -165,18 +180,18 @@ if __name__ == "__main__":
             pipeline.runProcess(process)
 
         
-        print('FINISHED PROCESSES')
-        for finished_id in pipeline.finished_processes:
-            print(pipeline.log[finished_id][0])
-            print(pipeline.log[finished_id][1])
+        with open('Backdoor-finished.json','w') as f:
+            processes = pipeline.processes()
+            finshedProcesses = [processes[i] for i in pipeline.finished_processes]
 
-        print('')
-        print('')
-        print('')
-    
-        if(len(pipeline.failed_processes) > 0):
-            print('FAILED PROCESSES')
-            for failed_id in pipeline.failed_processes:
-                print(pipeline.log[failed_id][0])
-                print(pipeline.log[failed_id][1])
-    
+            json.dump(finshedProcesses,f,indent=4, separators=(',', ': '))
+
+        with open('Backdoor-failed.json','w') as f:
+            processes = pipeline.processes()
+            failedProcesses = [processes[i] for i in pipeline.failed_processes]
+            json.dump(failedProcesses,f,indent=4, separators=(',', ': '))
+
+
+        print('All finished and failed processes were written into')
+        print('Backdoor-finished.json and Backdoor-failed.json')
+
