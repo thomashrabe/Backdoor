@@ -85,12 +85,12 @@ class Pipeline(object):
         self._failedProcesses = []
         self._waitingProcesses = []
         self._log = {}
-        self._previousProcesses = null
+        self._previousProcesses = None
 
         with open(configFile) as a_file:
             self._configuration = json.load(a_file)
 
-        if finishedFile:
+        if previoslyFinished:
             with open(previoslyFinished) as a_file:
                 self._previousProcesses = json.load(a_file)
     
