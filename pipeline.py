@@ -79,15 +79,21 @@ class PipelineProcess(object):
         return self._rawObject
 
 class Pipeline(object):
-    def __init__(self,configFile = './config.json'):
+    def __init__(self,configFile = './config.json',previoslyFinished):
 
         self._finishedProcesses = []
         self._failedProcesses = []
         self._waitingProcesses = []
         self._log = {}
+        self._previousProcesses = null
 
         with open(configFile) as a_file:
             self._configuration = json.load(a_file)
+
+        if finishedFile:
+            with open(previoslyFinished) as a_file:
+                self._previousProcesses = json.load(a_file)
+    
 
     @property
     def finished_processes(self):
@@ -121,7 +127,10 @@ class Pipeline(object):
                 raise PipelineDependencyFailedException()
             elif len(self._finishedProcesses) > 0 and len([d for d in process.depends_on if d in self._finishedProcesses]) == 0:
                 raise PipelineDependencyNotFinishedException()
-                 
+            elif len([ p for p in self._previousProcesses if p.id == process.id]) > 0:
+                print '%s was finished in a previous run of Backdoor.' % (process.name)
+                return    
+            
             print('STARTING %s ' % (process.name)) 
             print(process.command)
 
@@ -164,7 +173,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     if args.conf:
-        pipeline = Pipeline(args.conf)
+        pipeline = Pipeline(args.conf,args.finished)
     else:
         pipeline = Pipeline()
 
