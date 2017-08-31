@@ -79,7 +79,7 @@ class PipelineProcess(object):
         return self._rawObject
 
 class Pipeline(object):
-    def __init__(self,configFile = './config.json',previoslyFinished):
+    def __init__(self,configFile = './config.json',previoslyFinished = None):
 
         self._finishedProcesses = []
         self._failedProcesses = []
