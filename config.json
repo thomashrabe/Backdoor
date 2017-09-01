@@ -17,7 +17,7 @@
             "id" : 2,
             "name" : "Change rights",
             "command" : "chmod @rights @file",
-            "parameters" : {"file":"test.txt"},
+            "parameters" : {"file":"backdoor.txt"},
             "log" : "step2.log",
             "err" : "step2.err",
             "dependsOn" : [1]
