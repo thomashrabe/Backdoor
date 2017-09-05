@@ -122,6 +122,9 @@ class Pipeline(object):
         Generates a list of PipelineProcesses
         """
         for process in self._configuration['processes']:
+            if(len([p for p in self._previousProcesses['processes'] if p['id'] == process['id']])):
+                continue
+
             yield PipelineProcess(process,self._configuration['config'])
 
     def runProcess(self,process):
@@ -169,7 +172,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(prog='Backdoor')
-    parser.add_argument('--conf', type=str,help='Process JSON file')
+    parser.add_argument('--processes', type=str,help='Process JSON file')
     parser.add_argument('--finished', type=str,help='JSON file containing all previously finished processes')
     parser.add_argument('--dry', action='store_true',help='Dry run. Print all conanmds to terminal only.')
     
