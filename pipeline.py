@@ -140,7 +140,7 @@ class Pipeline(object):
             startTime = time.time()
 
             subprocess.check_output(process.command, shell=True)
-            self._finishedProcesses.append(process.id)
+            self._finishedProcesses.append(process)
             self._log[process.id] = [process.name,process.command]
             
             endTime = time.time()
@@ -150,11 +150,11 @@ class Pipeline(object):
             print('')
             
         except subprocess.CalledProcessError as grepexc:
-            self._failedProcesses.append(process.id)
+            self._failedProcesses.append(process)
             self._log[process.id] = [process.name,process.command,grepexc.returncode, grepexc.output]
         except PipelineDependencyFailedException as pex:
             print >> sys.stderr , 'Process ',process.id, ' not run because of dependency'
-            self._failedProcesses.append(process.id)
+            self._failedProcesses.append(process)
             self._log[process.id] = [process.name,process.command]
         except PipelineDependencyNotFinishedException as pex:
             self._waitingProcesses.append(process)
