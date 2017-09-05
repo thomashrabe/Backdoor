@@ -75,12 +75,13 @@ class PipelineProcess(object):
         return self._name
 
     @property
-    def processJSON(self):
+    def originalJSON(self):
         return self._rawObject
 
-class Pipeline(object):
-    def __init__(self,configFile = './config.json',previoslyFinished = None):
 
+class Pipeline(json.JSONEncoder):
+    def __init__(self,configFile = './config.json',previoslyFinished = None):
+        
         self._finishedProcesses = []
         self._failedProcesses = []
         self._waitingProcesses = []
