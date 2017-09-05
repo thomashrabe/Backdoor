@@ -196,16 +196,10 @@ if __name__ == "__main__":
 
         
         with open('Backdoor-finished.json','w') as f:
-            processes = pipeline.processes()
-            finshedProcesses = [processes[i] for i in pipeline.finished_processes]
-
-            json.dump(finshedProcesses,f,indent=4, separators=(',', ': '))
+            f.write(pipeline.finishedProcessesJSONString())
 
         with open('Backdoor-failed.json','w') as f:
-            processes = pipeline.processes()
-            failedProcesses = [processes[i] for i in pipeline.failed_processes]
-            json.dump(failedProcesses,f,indent=4, separators=(',', ': '))
-
+            f.write(pipeline.failedProcessesJSONString())
 
         print('All finished and failed processes were written into')
         print('Backdoor-finished.json and Backdoor-failed.json')
