@@ -98,10 +98,16 @@ class Pipeline(object):
     @property
     def finished_processes(self):
         return self._finishedProcesses
+    
+    def finishedProcessesJSONString(self):
+        return json.dumps([p.originalJSON for p in self._finishedProcesses],indent=4, separators=(',', ': '))
 
     @property
     def failed_processes(self):
         return self._failedProcesses
+
+    def failedProcessesJSONString(self):
+        return json.dumps([p.originalJSON for p in self._failedProcesses],indent=4, separators=(',', ': '))
 
     @property
     def waiting_processes(self):
