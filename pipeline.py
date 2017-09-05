@@ -87,12 +87,12 @@ class Pipeline(object):
         self._log = {}
         self._previousProcesses = None
 
-        with open(configFile) as a_file:
-            self._configuration = json.load(a_file)
+        with open(configFile) as file1:
+            self._configuration = json.load(file1)
 
         if previoslyFinished:
-            with open(previoslyFinished) as a_file:
-                self._previousProcesses = json.load(a_file)
+            with open(previoslyFinished) as file2:
+                self._previousProcesses = json.load(file2)
     
 
     @property
