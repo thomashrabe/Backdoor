@@ -149,7 +149,7 @@ class Pipeline(object):
             endTime = time.time()
             difference = endTime - startTime
             print('FINISHED %s ' % (process.name)) 
-            print('Processing took %i seconds') % (differnce)
+            print('Processing took %i seconds') % (difference)
             print('')
             
         except subprocess.CalledProcessError as grepexc:
@@ -178,8 +178,8 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
     
-    if args.conf:
-        pipeline = Pipeline(args.conf,args.finished)
+    if args.processes:
+        pipeline = Pipeline(args.processes,previoslyFinished= args.finished)
     else:
         pipeline = Pipeline()
 
