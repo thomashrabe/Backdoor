@@ -129,13 +129,10 @@ class Pipeline(object):
         Executes a process of the pipeline
         """
         try:
-            if len([d for d in process.depends_on if d in self._failedProcesses]) > 0:
+            if len([d for d in process.depends_on if d in map(lambda x:x.id,self._failedProcesses)]) > 0:
                 raise PipelineDependencyFailedException()
-            elif len(self._finishedProcesses) > 0 and len([d for d in process.depends_on if d in self._finishedProcesses]) == 0:
+            elif len(self._finishedProcesses) > 0 and len([d for d in process.depends_on if d in map(lambda x:x.id,self._finishedProcesses)]) == 0:
                 raise PipelineDependencyNotFinishedException()
-            elif len([ p for p in self._previousProcesses if p.id == process.id]) > 0:
-                print '%s was finished in a previous run of Backdoor.' % (process.name)
-                return    
             
             print('STARTING %s ' % (process.name)) 
             print(process.command)
