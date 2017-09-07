@@ -124,6 +124,7 @@ class Pipeline(json.JSONEncoder):
         """
         for process in self._configuration['processes']:
             if(len([p for p in self._previousProcesses['processes'] if p['id'] == process['id']])):
+                self._finishedProcesses.append(PipelineProcess(process,self._configuration['config']))
                 continue
 
             yield PipelineProcess(process,self._configuration['config'])
